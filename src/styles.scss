@@ -1,1 +1,297 @@
 /* You can add global styles to this file, and also import other style files */
+
+$cg-blue: #009ece;
+$eerie-black: #222222ff;
+$danger: #ce3000;
+$danger-hover: #ff511c;
+$danger-active: #ff8c69;
+$success: #00ce30;
+$success-hover: #1cff51;
+$success-active: #69ff8c;
+$white: #ffffffff;
+$offwhite: #f8f8f8;
+$medium-sea-green: #4fb477ff;
+$red-orange-color-wheel: #fb5012ff;
+
+*{
+   padding: 0;
+   margin: 0;
+   font-family: Arial, Helvetica, sans-serif;
+}
+p{
+   font-size: 16px;
+}
+
+@keyframes fadein {
+   from { opacity: 0; }
+   to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+   from { opacity: 0; }
+   to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+   from { opacity: 0; }
+   to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+   from { opacity: 0; }
+   to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+   from { opacity: 0; }
+   to   { opacity: 1; }
+}
+
+button{
+   text-align: center;
+   margin-left: 1%;
+   font-size: 16px;
+   display: inline-block;
+   border-radius: 2px;
+   padding: 8px;
+   transition: 0.1s;
+}
+.secondary{
+   background-color: $white;
+   border: 2px solid #ff9e00;
+   color: #ff9e00;
+   outline: none;
+}
+.secondary:hover{
+   background-color: #FF9e00;
+   color: $white;
+}
+.secondary:active{
+   background-color: #ffbb4d;
+   border: 2px solid #ffbb4d;
+   color: $white;
+}
+.primary{
+   background-color: $cg-blue;
+   color: $white;
+   border: 2px solid $cg-blue;
+   outline: none;
+}
+.primary:hover{
+   background-color: #00b3f2;
+   border: 2px solid #00b3f2;
+}
+.primary:active{
+   background-color: #40cdff;
+   border: 2px solid #40cdff;
+}
+.neutral{
+   background-color: #e0e0e0;
+   color: #212121;
+   border: 2px solid #e0e0e0;
+   outline: none;
+}
+.neutral:hover{
+   background-color: #bdbdbd;
+   border: 2px solid #bdbdbd;
+}
+.neutral:active{
+   background-color: #9e9e9e;
+   border: 2px solid #9e9e9e;
+}
+.danger{
+   background-color: $danger;
+   color: $white;
+   border: 2px solid $danger;
+   outline: none;
+}
+.danger:hover{
+   background-color: $danger-hover;
+   border: 2px solid $danger-hover;
+   outline: none;
+}
+.danger:active{
+   background-color: $danger-active;
+   border: 2px solid $danger-active;
+   outline: none;
+}
+.success{
+   background-color: $success;
+   color: $white;
+   border: 2px solid $success;
+   outline: none;
+}
+.success:hover{
+   background-color: $success-hover;
+   border: 2px solid $success-hover;
+   outline: none;
+}
+.success:active{
+   background-color: $success-active;
+   border: 2px solid $success-active;
+   outline: none;
+}
+.main-header{
+   height: 50px;
+   background-color: #DCDCDC;
+   display: flex;
+   width: 96%;
+   box-sizing: border-box;
+   position: fixed;
+   top: 0;
+   box-shadow: 1px 4px 3px 0 rgba(0,0,0,0.2);
+   h1{
+      margin-right: auto;
+      padding: 0.5%;
+   }
+   .option{
+      text-align: center;
+      padding: 0.5%;
+   }
+   .option:hover{
+      color: #808080;
+   }
+   .userInfo{
+      padding: 0.5%;
+      display: flex;
+      flex-direction: column;
+   }
+
+}
+.filter-modal{
+   display: none;
+   transition: 0.3s;
+   opacity: 0;
+}
+.add-modal{
+   display: none;
+   transition: 0.3s;
+   opacity: 0;
+}
+.modal{
+   .modal-header{
+      display: flex;
+      flex-direction: row-reverse;
+      background-color: $cg-blue;
+   }
+   .modal-body{
+      padding: 10px;
+   }
+   position:fixed;
+   z-index: 1;
+   top: 50px;
+   right: 0;
+   box-shadow: 1px 4px 3px 0 rgba(0,0,0,0.2);
+   width: 400px;
+   border-radius: 4px;
+   overflow: hidden;
+   background-color: $white;
+   .button-row{
+      width: 100%;
+      display: flex;
+      flex-direction: row-reverse;
+   }
+   input{
+      margin-bottom: 8px
+   }
+   input[type=number]{
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+   }
+   input[type=number]:focus{
+      outline-color: $cg-blue;
+   }
+   input[type=range]{
+      padding: 8px;
+   }
+   input[type=text]{
+      transition: 0.1s;
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+   }
+   input[type=text]:focus{
+      outline-color: $cg-blue;
+   }
+   textarea{
+      resize: vertical;
+      transition: 0.1s;
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+   }
+   textarea:focus{
+      outline-color: $cg-blue;
+   }
+}
+.main-content{
+   min-height: 100%;
+   width: 100%;
+   padding-top: 50px;
+   box-sizing: border-box;
+}
+
+.card-container{
+   min-height: 100%;
+   width: 100%;
+   display: grid;
+   column-gap: 0.5vw;
+   row-gap: 1vh;
+   padding: 0.5%;
+   box-sizing: border-box;
+   grid-template-columns: auto auto auto;
+   -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+   -moz-animation: fadein 1s; /* Firefox < 16 */
+   -ms-animation: fadein 1s; /* Internet Explorer */
+   -o-animation: fadein 1s; /* Opera < 12.1 */
+   animation: fadein 1s;
+}
+.data-card{
+   font-size: 16px;
+   box-shadow: 1px 4px 3px 0 rgba(0,0,0,0.2);
+   .data-card-header{
+      background-color: $cg-blue;
+      color: $white;
+      font-weight: bold;
+      padding: 6px;
+      border-radius-top-left: 20px;
+      border-radius-top-right: 20px;
+      box-sizing: border-box;
+   }
+   .data-card-body{
+      background-color: $offwhite;
+      padding: 6px;
+      border-radius-bottom-left: 10%;
+      border-radius-bottom-right: 10%;
+      box-sizing: border-box;
+   }
+   .card-table{
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto auto;
+      .card-label{
+         font-weight: bold;
+      }
+      .card-value{
+         margin-left: auto;
+      }
+   }
+   .card-button-row{
+      display: flex;
+      flex-direction: row-reverse;
+      margin-top: 20px;
+      padding-bottom: 4px;
+      button{
+         box-shadow: 1px 2px 1px 0 rgba(0,0,0,0.2);
+      }
+   }
+}
+.data-card:hover{
+   box-shadow: 1px 4px 8px 0 rgba(0,0,0,0.2);
+}
+

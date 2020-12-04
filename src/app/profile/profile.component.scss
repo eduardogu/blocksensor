@@ -1,0 +1,57 @@
+$red-orange-color-wheel: #fb5012ff;
+$cg-blue: #009ece;
+
+.columns{
+   width: 100%;
+   display: grid;
+   height: 100%;
+   box-sizing: border-box;
+   padding: 0.5%;
+   row-gap: 1vh;
+   column-gap: 0.5vw;
+   grid-template-columns: 50% 50%;
+}
+.data-card-header{
+   background-color: $red-orange-color-wheel;
+}
+.contract{
+   box-shadow: 1px 2px 1px 0 rgba(0,0,0,0.1);
+}
+.contract-column{
+   height: calc(100vh - 100px);
+}
+.contract-list{
+   max-height: 100%;
+   overflow-y: auto;
+}
+.contract-header{
+   background-color: $cg-blue;
+   color: white;
+   display: flex;
+   padding: 6px;
+   font-weight: bold;
+   box-sizing: border-box;
+   .contract-format{
+      margin-left: auto;
+   }
+}
+.contract-body{
+   display: flex;
+   padding: 6px;
+   box-sizing: border-box;
+   .contract-cost{
+      margin-left: auto;
+   }
+   .contract-earned{
+      margin-left: auto;
+   }
+}
+.contract-footer{
+   display: flex;
+   padding: 6px;
+   box-sizing: border-box;
+   .contract-options{
+      display: flex;
+      margin-left: auto;
+   }
+}

@@ -1,0 +1,81 @@
+<div class="modal filter-modal" id="filter-modal">
+   <div class="modal-body">
+      <label for="sensor-id">Sensor ID</label><br>
+      <input type="text" id="sensor-id" name="sensor-id"><br>
+      <label for="owner">Owner</label><br>
+      <input type="text" id="owner" name="owner"><br>
+      <label for="zip">Zip Code</label><br>
+      <input type="text" id="zip" name="zip"><br>
+      <label for="rating">Rating(Greater than )</label><br>
+      <input type="range" min="1" max="100" value="50" class="slider" id="rating"><br>
+      <label for="cost">Max Cost </label><br>
+      <input type="number" min="1" id="cost"><br>
+      <label for="checkbox">Data Type</label><br>
+      <input type="checkbox" id="daatype1" name="datatype1" value="Temperature">
+      <label for="datatype1">Temperature</label><br>
+      <input type="checkbox" id="other" name="other" value="Other">
+      <label for="other">Other</label><br>
+      <div class="button-row">
+         <button class="primary">Submit</button>
+      </div>
+   </div>
+</div>
+<div class="modal search-modal" id="search-modal">
+   <div class="modal-body">
+      <label for="contract-owner">Contract Owner</label><br>
+      <input type="text" id="contract-owner" name="contract-buyer"><br>
+      <label for="owner">Contract Buyer</label><br>
+      <input type="text" id="contract-buyer" name="contract-buyer"><br>
+      <div class="button-row">
+         <button class="primary" (click)="getContracts()">Submit</button>
+      </div>
+   </div>
+</div>
+<div class="main-header">
+   <h1>Data <i class="fa fa-bar-chart"></i></h1>
+   <div id="filter-option" class="option" (click)="openFilter()">
+      <i class="fa fa-filter fa-1x" aria-hidden="true"></i><br>
+      Filter
+   </div>
+   <div id="sort-option" class="option">
+      <i class="fa fa-sync fa-1x" aria-hidden="true"></i><br>
+      Sort
+   </div>
+   <div id="search-option" class="option" (click)="openSearch()">
+      <i class="fa fa-search fa-1x" aria-hidden="true"></i><br>
+      Search
+   </div>
+</div>
+<div class="main-content">
+<div class="card-container">
+   <div class="data-card" *ngFor="let data of contracts">
+      <div class="data-card-header">
+         <b>{{data.contractAddr}}</b>
+      </div>
+      <div class="data-card-body">
+         <div class="card-table">
+            <div class="card-label">Owner: </div>
+            <div class="card-value">{{data.provider}}</div>
+            <div class="card-label">Format: </div>
+            <div class="card-value">{{data.dataFormat}}</div>
+            <div class="card-label">Buyer: </div>
+            <div class="card-value" *ngIf="data.buyer === this.userAddress">You</div>
+            <div class="card-value" *ngIf="data.buyer === this.emptyAddress">None</div>
+            <div class="card-value" *ngIf="(data.buyer != this.userAddress) && (data.buyer != this.emptyAddress)">{{data.buyer}}</div>
+            <div class="card-label">Type: </div>
+            <div class="card-value">{{data.dataType}}</div>
+            <div class="card-label">Cost: </div>
+            <div class="card-value">{{data.updateCost}} wei</div>
+            <div class="card-label">Last Update: </div>
+            <div class="card-value">{{data.lastUpdate}}</div>
+         </div>
+         <div class="card-button-row">
+            <button *ngIf="this.emptyAddress === data.buyer" class="primary" [id]="data.contractAddr" (click)="takeContract(data.contractAddr)">Take Contract</button>
+            <button *ngIf="this.userAddress === data.buyer" class="danger" [id]="data.contractAddr">End Contract</button>
+            <button class="neutral"  [routerLink]="['../../' + data.contractAddr]">View More</button>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+

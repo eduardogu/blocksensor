@@ -1,0 +1,71 @@
+<div class="main-header">
+   <h1>Profile <i class="fab fa-ethereum"></i></h1>
+   <div class="userInfo">
+      <div class="userAddress"><b>Address:</b> {{user.address}}</div>
+      <div class="userBalance"><b>Balance:</b> {{user.balance}} Wei</div>
+   </div>
+</div>
+<div class="main-content">
+   <div class="columns">
+      <div class="data-card contract-column">
+         <div class="data-card-header">
+            <h2>Contracts Taken: {{contractsTakenLength}}</h2>
+         </div>
+         <div class="contract-list">
+         <div class="data-card-body" *ngFor="let addr of contractsTaken">
+            <div class="contract">
+               <div class="contract-header">
+                  <div class="contract-address">{{addr.contractAddr}}</div>
+                  <div class="contract-format">{{addr.dataFormat}}</div>
+               </div>
+               <div class="contract-body">
+                  <div class="contract-provider"><b>Owner: </b>{{addr.provider}}</div>
+                  <div class="contract-cost"><b>Cost: </b>{{addr.updateCost}} Wei</div>
+               </div>
+               <div class="contract-body">
+                  <div class="contract-balance"><b>Deposited: </b>{{addr.deposited}} Wei</div>
+                  <div class="contract-earned"><b>Earned: </b>{{addr.earned}} Wei</div>
+               </div>
+               <div class="contract-footer">
+                  <div class="contract-lastUpdate"><b>Last Update: </b>{{addr.lastUpdate}}</div>
+                  <div class="contract-options">
+                     <button class="neutral" [routerLink]="['../data/' + addr.contractAddr]">View</button>
+                     <button class="danger">Terminate</button>
+                  </div>
+               </div>
+            </div>
+            </div>
+         </div>
+      </div>
+      <div class="data-card contract-column">
+         <div class="data-card-header">
+            <h2>Contracts Owned: {{contractsOwnedLength}}</h2>
+         </div>
+         <div class="contract-list">
+         <div class="data-card-body" *ngFor="let addr of contractsOwned">
+            <div class="contract">
+               <div class="contract-header">
+                  <div class="contract-address">{{addr.contractAddr}}</div>
+                  <div class="contract-format">{{addr.dataFormat}}</div>
+               </div>
+               <div class="contract-body">
+                  <div class="contract-buyer" *ngIf="addr.buyer !== this.emptyAddr"><b>Buyer: </b>{{addr.buyer}}</div>
+                  <div class="contract-buyer" *ngIf="addr.buyer === this.emptyAddr"><b>Buyer: </b>None</div>
+                  <div class="contract-cost"><b>Cost: </b>{{addr.updateCost}} Wei</div>
+               </div>
+               <div class="contract-body">
+                  <div class="contract-balance"><b>Deposited: </b>{{addr.deposited}} Wei</div> 
+                  <div class="contract-earned"><b>Earned: </b>{{addr.earned}} Wei</div>
+               </div>
+               <div class="contract-footer">
+                  <div class="contract-lastUpdate"><b>Last Update: </b>{{addr.lastUpdate}}</div>
+                  <div class="contract-options">
+                     <button class="neutral" [routerLink]="['../data/' + addr.contractAddr]">View</button>
+                     <button class="primary">Withdraw</button> 
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>   
+</div>

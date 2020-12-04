@@ -1,0 +1,53 @@
+/* SCSS HEX */
+$cg-blue: #0081a7ff;
+$eerie-black: #222222ff;
+$white: #ffffffff;
+$medium-sea-green: #4fb477ff;
+$red-orange-color-wheel: #fb5012ff;
+
+.main-container{
+   width: 100%;
+   display: flex;
+   min-height: 100%;
+}
+.navbar{
+   width: 4%;
+   height: 100vh;
+   background-color: $cg-blue;
+   position: fixed; 
+   box-shadow: 4px 0px 10px 0 rgba(0,0,0,0.2);
+   .nav{
+      height: 100vh;
+      list-style: none;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      li{
+         text-align: center;
+         padding: 1%;
+         padding-top: 10%;
+         box-sizing: border-box;
+         transition: 0.1s;
+      }
+      li:hover{
+         background-color: $white;
+         color: $cg-blue;
+      }
+      li:focus{
+         border: none;
+         outline: none;
+         color: #ffbe00;
+         background-color: white;
+      }
+      .bottom-button{
+         margin-top: auto;
+         padding-bottom: 10%;
+      }
+   }
+}
+.main{ 
+   height: 100%;
+   width: 96%;
+   margin-left: 4%;
+}
+

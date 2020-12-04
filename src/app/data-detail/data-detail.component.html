@@ -1,0 +1,410 @@
+<div class="modal filter-modal" id="filter-modal">
+   <div class="modal-body">
+      <label for="sensor-id">Sensor ID</label><br>
+      <input type="text" id="sensor-id" name="sensor-id"><br>
+      <label for="owner">Owner</label><br>
+      <input type="text" id="owner" name="owner"><br>
+      <label for="zip">Zip Code</label><br>
+      <input type="text" id="zip" name="zip"><br>
+      <label for="rating">Rating(Greater than )</label><br>
+      <input type="range" min="1" max="100" value="50" class="slider" id="rating"><br>
+      <label for="cost">Max Cost </label><br>
+      <input type="number" min="1" id="cost"><br>
+      <label for="checkbox">Data Type</label><br>
+      <input type="checkbox" id="daatype1" name="datatype1" value="Temperature">
+      <label for="datatype1">Temperature</label><br>
+      <input type="checkbox" id="other" name="other" value="Other">
+      <label for="other">Other</label><br>
+      <div class="button-row">
+         <button class="primary">Submit</button>
+      </div>
+   </div>
+</div>
+<div class="modal view-modal" id="view-modal">
+   <div class="modal-body">
+      <label for="read-contract-data">Contract Data</label><br>
+      <textarea id="read-contract-data" name="read-contract-data" rows="20">{{contract.data}}</textarea>
+   </div>
+</div>
+<div class="modal deposit-modal" id="deposit-modal">
+   <div class="modal-body">
+      <label for="deposit-amount">Enter Amount to Deposit (Wei)</label><br>
+      <input type="number" id="deposit-amount" name="deposit-amount">
+      <div class="button-row">
+         <button class="primary" (click)="this.deposit()">Deposit</button>
+      </div>
+   </div>
+</div>
+<div class="modal update-modal" id="update-modal">
+   <div class="modal-body">
+      <label for="new-contract-data">Enter New Contract Data</label><br>
+      <textarea id="new-contract-data" name="new-contract-data">{{contract.data}}</textarea>
+      <div class="button-row">
+         <button class="primary" (click)="this.updateContract()">Update</button>
+      </div>
+   </div>
+</div>
+<div class="modal withdraw-modal" id="withdraw-modal">
+   <div class="modal-body">
+      <label for="withdraw-amount">Enter Withdraw Amount (Wei)</label><br>
+      <input type="number" id="withdraw-amount" name="withdraw-amount">
+      <div class="button-row">
+         <button class="primary">Withdraw</button>
+      </div>
+   </div>
+</div>
+<div class="main-header">
+   <h1>Contract <i class="fas fa-file-contract"></i></h1>
+   <!---Buyer Options-->
+   <div *ngIf="contract.buyer === userAddress" id="view-otption" class="option" (click)="openView()">
+      <i class="fa fa-download fa-1x" aria-hidden="true"></i><br>
+      View Data
+   </div>
+   <div *ngIf="contract.buyer === userAddress" id="deposit-option" class="option" (click)="openDeposit()">
+      <i class="fab fa-ethereum fa-1x" aria-hidden="true"></i><br>
+      Deposit
+   </div>
+   <div *ngIf="contract.buyer === userAddress" id="terminate-option" class="option" (click)="openFilter()">
+      <i class="fa fa-ban fa-1x" aria-hidden="true"></i><br>
+      Terminate
+   </div>
+   <!--Creator Options-->
+   <div *ngIf="contract.provider === this.userAddress" id="update-option" class="option" (click)="this.openUpdate()">
+      <i class="fa fa-upload fa-1x" aria-hidden="true"></i><br>
+      Update Data
+   </div>
+   <div *ngIf="contract.provider === userAddress" id="withdraw-option" class="option" (click)="this.openWithdraw()">
+      <i class="fab fa-ethereum fa-1x" aria-hidden="true"></i><br>
+      Withdraw
+   </div>
+   <div *ngIf="contract.provider === userAddress" id="configure-option" class="option">
+      <i class="fa fa-cog fa-1x" aria-hidden="true"></i><br>
+      Configure
+   </div>
+   <!--Potential Buyer Options-->
+   <div *ngIf="contract.buyer === this.emptyAddress && contract.provider !== this.userAddress" id="accept-option" class="option" (click)="this.takeContract(contract.contractAddr)">
+      <i class="fa fa-plus fa-1x" aria-hidden="true"></i><br>
+      Accept
+   </div>
+   
+</div>
+<div class="main-content">
+<div class="detail-wrapper">
+   <div class="detail-info">
+      <div class="detail-update">
+         <div class="last-update">
+            <span><b>Last Update: </b></span>
+            Just Now
+         </div>
+         <div class="cost-per-update">
+            <span><b>Cost Per Update: </b></span>
+            {{contract.updateCost}} Wei
+         </div>
+         <div class="updates-left">
+            <span><b>Updates Left: </b></span>
+            {{this.updatesLeft}}
+         </div>
+         <div class="update-cycles">
+            <span><b>Update Rate: </b></span>
+            {{contract.updateCycle}}s
+         </div>
+      </div>
+      <div class="detail-info-container">
+         <h1 class="data-title">{{contract.contractAddr}}</h1>
+            <span class="divider"></span>
+            <h4 class="data-owner"><b>Owner: </b>{{contract.provider}}</h4>
+            <h4 class="data-type"><b>Type: </b>{{contract.dataType}}</h4>
+            <h4 class="data-format"><b>Format: </b>{{contract.dataFormat}}</h4>
+            <h4 class="data-balance"><b>Balance: </b>{{contract.deposited}} Wei</h4>
+            <h4 class="data-earned"><b>Earned: </b>{{contract.earned}} Wei</h4>
+            <h4 class="data-system"><b>System: </b></h4>
+            <ul class="data-system-list">
+               <li>8 MPS432 Microcontroller Boards</li>
+               <li>8 Rainbird 38GZ Temperature Sensors</li>
+            </ul>
+            <h4 class="data-description"><b>Description</b></h4>
+            <span class="divider"></span>
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultrices cursus interdum. Maecenas dictum suscipit elementum. Aliquam placerat ultrices blandit. Integer nisi metus, aliquet eu erat in, aliquet luctus est. Sed tristique tincidunt ornare. Mauris pulvinar leo at lobortis lobortis. Suspendisse potenti. Nunc vitae gravida tellus. Vestibulum in tellus ullamcorper, convallis mauris a, rutrum quam. Donec faucibus metus convallis nunc malesuada, vel pellentesque nisi rhoncus. Nunc ligula sem, dictum quis magna quis, tempus efficitur eros. Duis mattis malesuada auctor.<br><br>
+
+            Curabitur maximus gravida enim id pulvinar. Suspendisse et risus a nunc hendrerit hendrerit non ac turpis. Aenean cursus rhoncus turpis, ut elementum libero rutrum quis. Aliquam erat volutpat. Aenean dolor nisl, fringilla id dolor in, consequat euismod purus. Donec sodales turpis risus, ut bibendum purus ornare ut. Sed tempor eleifend ipsum ac tempus. Etiam tempus quam aliquam lectus lobortis ultrices. Nunc purus ex, pulvinar at convallis a, euismod vel enim. Vestibulum ut leo ante. Morbi luctus lobortis elit, vel lacinia lectus faucibus eu. Praesent cursus ante at cursus lobortis. Aliquam erat volutpat. Quisque a ligula quis est tincidunt pulvinar. Donec dui mauris, condimentum vel tortor sed, volutpat mollis orci. Praesent dapibus lacus a lectus lacinia semper.<br><br>
+
+            Cras at quam malesuada, malesuada felis a, blandit eros. Sed tempor nibh ut sem consectetur faucibus. Nulla laoreet imperdiet finibus. Proin sed suscipit dui, sit amet faucibus nisi. Praesent faucibus pharetra pellentesque. Nullam id scelerisque enim. Duis feugiat tortor at nulla feugiat, egestas commodo massa ultrices. Nam tellus leo, mollis sit amet gravida et, ultricies sed ipsum. Mauris rutrum libero ut dignissim condimentum.<br><br>
+
+            Curabitur maximus gravida enim id pulvinar. Suspendisse et risus a nunc hendrerit hendrerit non ac turpis. Aenean cursus rhoncus turpis, ut elementum libero rutrum quis. Aliquam erat volutpat. Aenean dolor nisl, fringilla id dolor in, consequat euismod purus. Donec sodales turpis risus, ut bibendum purus ornare ut. Sed tempor eleifend ipsum ac tempus. Etiam tempus quam aliquam lectus lobortis ultrices. Nunc purus ex, pulvinar at convallis a, euismod vel enim. Vestibulum ut leo ante. Morbi luctus lobortis elit, vel lacinia lectus faucibus eu. Praesent cursus ante at cursus lobortis. Aliquam erat volutpat. Quisque a ligula quis est tincidunt pulvinar. Donec dui mauris, condimentum vel tortor sed, volutpat mollis orci. Praesent dapibus lacus a lectus lacinia semper.<br><br>
+
+            Cras at quam malesuada, malesuada felis a, blandit eros. Sed tempor nibh ut sem consectetur faucibus. Nulla laoreet imperdiet finibus. Proin sed suscipit dui, sit amet faucibus nisi. Praesent faucibus pharetra pellentesque. Nullam id scelerisque enim. Duis feugiat tortor at nulla feugiat, egestas commodo massa ultrices. Nam tellus leo, mollis sit amet gravida et, ultricies sed ipsum. Mauris rutrum libero ut dignissim condimentum.
+
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultrices cursus interdum. Maecenas dictum suscipit elementum. Aliquam placerat ultrices blandit. Integer nisi metus, aliquet eu erat in, aliquet luctus est. Sed tristique tincidunt ornare. Mauris pulvinar leo at lobortis lobortis. Suspendisse potenti. Nunc vitae gravida tellus. Vestibulum in tellus ullamcorper, convallis mauris a, rutrum quam. Donec faucibus metus convallis nunc malesuada, vel pellentesque nisi rhoncus. Nunc ligula sem, dictum quis magna quis, tempus efficitur eros. Duis mattis malesuada auctor.<br><br>
+
+            Curabitur maximus gravida enim id pulvinar. Suspendisse et risus a nunc hendrerit hendrerit non ac turpis. Aenean cursus rhoncus turpis, ut elementum libero rutrum quis. Aliquam erat volutpat. Aenean dolor nisl, fringilla id dolor in, consequat euismod purus. Donec sodales turpis risus, ut bibendum purus ornare ut. Sed tempor eleifend ipsum ac tempus. Etiam tempus quam aliquam lectus lobortis ultrices. Nunc purus ex, pulvinar at convallis a, euismod vel enim. Vestibulum ut leo ante. Morbi luctus lobortis elit, vel lacinia lectus faucibus eu. Praesent cursus ante at cursus lobortis. Aliquam erat volutpat. Quisque a ligula quis est tincidunt pulvinar. Donec dui mauris, condimentum vel tortor sed, volutpat mollis orci. Praesent dapibus lacus a lectus lacinia semper.<br><br>
+
+            Cras at quam malesuada, malesuada felis a, blandit eros. Sed tempor nibh ut sem consectetur faucibus. Nulla laoreet imperdiet finibus. Proin sed suscipit dui, sit amet faucibus nisi. Praesent faucibus pharetra pellentesque. Nullam id scelerisque enim. Duis feugiat tortor at nulla feugiat, egestas commodo massa ultrices. Nam tellus leo, mollis sit amet gravida et, ultricies sed ipsum. Mauris rutrum libero ut dignissim condimentum.<br><br>
+
+            Curabitur maximus gravida enim id pulvinar. Suspendisse et risus a nunc hendrerit hendrerit non ac turpis. Aenean cursus rhoncus turpis, ut elementum libero rutrum quis. Aliquam erat volutpat. Aenean dolor nisl, fringilla id dolor in, consequat euismod purus. Donec sodales turpis risus, ut bibendum purus ornare ut. Sed tempor eleifend ipsum ac tempus. Etiam tempus quam aliquam lectus lobortis ultrices. Nunc purus ex, pulvinar at convallis a, euismod vel enim. Vestibulum ut leo ante. Morbi luctus lobortis elit, vel lacinia lectus faucibus eu. Praesent cursus ante at cursus lobortis. Aliquam erat volutpat. Quisque a ligula quis est tincidunt pulvinar. Donec dui mauris, condimentum vel tortor sed, volutpat mollis orci. Praesent dapibus lacus a lectus lacinia semper.<br><br>
+
+            Cras at quam malesuada, malesuada felis a, blandit eros. Sed tempor nibh ut sem consectetur faucibus. Nulla laoreet imperdiet finibus. Proin sed suscipit dui, sit amet faucibus nisi. Praesent faucibus pharetra pellentesque. Nullam id scelerisque enim. Duis feugiat tortor at nulla feugiat, egestas commodo massa ultrices. Nam tellus leo, mollis sit amet gravida et, ultricies sed ipsum. Mauris rutrum libero ut dignissim condimentum.<br><br>
+            </p>
+      </div>
+      
+   </div>
+   <div class="detail-transaction">
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+      <div class="block">
+         <div class="green-bar"></div>
+         <div class="block-info">
+            <b>Block: </b><span> 391091 </span><br>
+            <b>Updated: </b><span> 17 minutes ago </span><br>
+            <b>From: </b><span>0x06c32179798723af</span><br>
+         </div>
+      </div>
+   </div>
+</div>
+</div>

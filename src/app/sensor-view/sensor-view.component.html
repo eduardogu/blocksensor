@@ -1,0 +1,85 @@
+<div class="modal filter-modal" id="filter-modal">
+   <div class="modal-body">
+      <label for="sensor-id">Sensor ID</label><br>
+      <input type="text" id="sensor-id" name="sensor-id"><br>
+      <label for="owner">Owner</label><br>
+      <input type="text" id="owner" name="owner"><br>
+      <label for="zip">Zip Code</label><br>
+      <input type="text" id="zip" name="zip"><br>
+      <label for="rating">Rating(Greater than )</label><br>
+      <input type="range" min="1" max="100" value="50" class="slider" id="rating"><br>
+      <label for="cost">Max Cost </label><br>
+      <input type="number" min="1" id="cost"><br>
+      <label for="checkbox">Data Type</label><br>
+      <input type="checkbox" id="daatype1" name="datatype1" value="Temperature">
+      <label for="datatype1">Temperature</label><br>
+      <input type="checkbox" id="other" name="other" value="Other">
+      <label for="other">Other</label><br>
+      <div class="button-row">
+         <button class="primary">Submit</button>
+      </div>
+   </div>
+</div>
+<div class="modal add-modal" id="add-modal">
+   <div class="modal-body">
+      <h2>Creating New Sensor</h2>
+      <label for="title">Title</label><br>
+      <input type="text" id="title" name="title"><br>
+      <label for="datatype">Data Type</label><br>
+      <input type="text" id="datatype" name="datatype"><br>
+      <label for="dataformat">Data Format</label><br>
+      <input type="text" id="dataformat" name="dataformat"><br>
+      <label for="cost">Cost Per Update</label><br>
+      <input type="number" id="costPerUpdate" name="cost"><br>
+      <label for="cycles">Update Time</label>
+      <input type="number" id="cycles" name="cycles"><br>
+      <label for="description">Description</label><br>
+      <input type="textbox" id="description" name="description"><br>
+      <div class="button-row">
+         <button (click)="createOracle()" class="success">Add</button>
+      </div>
+   </div>
+</div>
+<div class="main-header">
+   <h1>Sensors <i class="fa fa-thermometer"></i></h1>
+   <div (click)="openAddSensor()" class="option" id="add-option">
+      <i class="fa fa-plus fa-1x" aria-hidden="true"></i><br>
+      Add
+   </div>
+   <div class="option" (click)="openFilter()" id="filter-option">
+      <i class="fa fa-filter fa-1x" aria-hidden="true"></i><br>
+      Filter
+   </div>
+</div>
+<div class="main-content">
+<div class="card-container">
+   <div class="data-card" *ngFor="let contract of contractsOwned">
+      <div class="data-card-header">
+         Contract: {{contract.contractAddr}}
+      </div>
+      <div class="data-card-body">
+         <div class="card-table">
+            <div class="card-label">Buyer      : </div>
+            <div class="card-value" *ngIf="contract.buyer !== this.emptyAddress">{{contract.buyer}}</div>
+            <div class="card-value" *ngIf="contract.buyer === this.emptyAddress">None</div>
+            <div class="card-label">Type: </div>
+            <div class="card-value">{{contract.dataType}}</div>
+            <div class="card-label">Format: </div>
+            <div class="card-value">{{contract.dataFormat}}</div>
+            <div class="card-label">Cost: </div>
+            <div class="card-value">{{contract.updateCost}} Wei</div>
+            <div class="card-label">Balance: </div>
+            <div class="card-value">{{contract.deposited}}</div>
+            <div class="card-label">Earned: </div>
+            <div class="card-value">{{contract.earned}}</div>
+            <div class="card-label">Last Update: </div>
+            <div class="card-value">{{contract.lastUpdate}}</div>
+         </div>
+         <div class="card-button-row">
+            <button class="danger">Terminate</button>
+            <button class="neutral" [routerLink]="['../data/' + contract.contractAddr]">View More</button>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
