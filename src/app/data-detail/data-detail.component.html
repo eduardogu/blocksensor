@@ -49,7 +49,14 @@
       <label for="withdraw-amount">Enter Withdraw Amount (Wei)</label><br>
       <input type="number" id="withdraw-amount" name="withdraw-amount">
       <div class="button-row">
-         <button class="primary">Withdraw</button>
+         <button class="primary" (click)="this.withdraw()">Withdraw</button>
+      </div>
+   </div>
+</div>
+<div class="modal configure-modal" id="configure-modal">
+   <div class="modal-body">
+      <div class="button-row">
+         <button class="primary" (click)="this.configureContract()">Update</button>
       </div>
    </div>
 </div>
@@ -77,7 +84,7 @@
       <i class="fab fa-ethereum fa-1x" aria-hidden="true"></i><br>
       Withdraw
    </div>
-   <div *ngIf="contract.provider === userAddress" id="configure-option" class="option">
+   <div *ngIf="contract.provider === userAddress" id="configure-option" class="option" (click)="this.openConfigure()">
       <i class="fa fa-cog fa-1x" aria-hidden="true"></i><br>
       Configure
    </div>

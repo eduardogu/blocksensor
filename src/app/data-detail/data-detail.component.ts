@@ -28,10 +28,12 @@ export class DataDetailComponent implements OnInit {
       var withdraw = document.getElementById("withdraw-modal");
       var view = document.getElementById("view-modal");
       var deposit = document.getElementById("deposit-modal");
+      var config = document.getElementById("configure-modal");
       update.style.display = "none";
       withdraw.style.display = "none";
       view.style.display = "none";
       deposit.style.display = "none";
+      config.style.display = "none";
   }
   public openDeposit(){
      var deposit = document.getElementById("deposit-modal");
@@ -45,6 +47,22 @@ export class DataDetailComponent implements OnInit {
      else{
         deposit.style.display = "none";
         deposit.style.display = "0";
+        option.style.backgroundColor = "#dcdcdc";
+        option.style.color = "#000000";
+     }
+  }
+  public openConfigure(){
+     var config = document.getElementById("configure-modal");
+     var option = document.getElementById("configure-option");
+     if(config.style.display == "none"){
+        config.style.display = "block";
+        config.style.opacity = "1";
+        option.style.backgroundColor = "white";
+        option.style.color = "#ff9e00";
+     }
+     else{
+        config.style.display = "none";
+        config.style.display = "0";
         option.style.backgroundColor = "#dcdcdc";
         option.style.color = "#000000";
      }
@@ -146,6 +164,21 @@ export class DataDetailComponent implements OnInit {
       var value: number = +(<HTMLInputElement>document.getElementById("deposit-amount")).value;
       this.depositToContract(this.contractAddress, value);
       this.openDeposit();
+  }
+  public withdraw(){
+     var value: number = +(<HTMLInputElement>document.getElementById("withdraw-amount")).value;
+     this.withdrawFromContract(this.contractAddress, value);
+     this.openWithdraw();
+  }
+  withdrawFromContract = (addr: string, amount: number) => {
+     const that = this;
+     console.log("Hopefully withdrawing: " + amount);
+     this.transferService.withdrawEther(addr, amount).then(function(retVal: any){
+        console.log('Withdrew ehter successfully');
+        that.contract.earned -= amount;
+     }).catch(function(error){
+        console.log("Error: " + error);
+     });
   }
   depositToContract = (addr: string, amount: number) => {
       const that = this;

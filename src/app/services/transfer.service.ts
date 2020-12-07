@@ -317,6 +317,30 @@ export class TransferService {
         });
      });
   }
+  public async withdrawEther(contractAddr: string, amount: number): Promise<any>{
+     const account = await this.getAccount();
+     console.log("To: " + contractAddr);
+     console.log("Passing in: " + amount);
+     console.log("transfer.service :: withdrawContract");
+     return new Promise((resolve, reject) => {
+        const contract = require('@truffle/contract');
+        const transferContract = contract(tokenAbi);
+        transferContract.setProvider(this.web3);
+        transferContract.deployed().then(function(instance){
+            const retVal = instance.withdrawFrom(
+               contractAddr,
+               amount,
+               {from: account}
+            );
+            resolve(retVal);
+        }).catch(function(error){
+           console.log(error);
+           return reject('transfer.service error');
+        });
+     }).catch(function(error){
+        console.log(error);
+     });
+  }
   public async updateContract(contractAddr: string, data: string): Promise<any>{
       const account = await this.getAccount();
       console.log("To: " + contractAddr);
